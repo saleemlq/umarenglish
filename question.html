@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 100vw;
+            margin: auto;
+        }
+
+        .column {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .column h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+            background: #fef9e7;
+            /* initial state light yellow */
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .highlight {
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        @media (max-width: 840px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Make Question</h2>
+    <div class="grid">
+        <!-- Present Indefinite -->
+        <div class="column" id="present-indef">
+            <h3>Present Indefinite (Do/Does)</h3>
+        </div>
+
+        <!-- Past Indefinite -->
+        <div class="column" id="past-indef">
+            <h3>Past Indefinite (Did)</h3>
+        </div>
+
+        <!-- Present Perfect -->
+        <div class="column" id="present-perfect">
+            <h3>Present Perfect (Has/Have)</h3>
+        </div>
+    </div>
+
+    <script>
+        const columns = {
+            "present-indef": [
+                ["He learns Quran online", "He <span class='highlight'>does</span> learn Quran online", "<span class='highlight'>Does</span> he learn Quran online?"],
+                ["They read Tajweed lessons", "They <span class='highlight'>do</span> read Tajweed lessons", "<span class='highlight'>Do</span> they read Tajweed lessons?"],
+                ["She attends Islamic class", "She <span class='highlight'>does</span> attend Islamic class", "<span class='highlight'>Does</span> she attend Islamic class?"],
+                ["We join Quran sessions", "We <span class='highlight'>do</span> join Quran sessions", "<span class='highlight'>Do</span> we join Quran sessions?"],
+                ["I recite Surah Yaseen", "I <span class='highlight'>do</span> recite Surah Yaseen", "<span class='highlight'>Do</span> I recite Surah Yaseen?"],
+                ["The teacher explains Tajweed", "The teacher <span class='highlight'>does</span> explain Tajweed", "<span class='highlight'>Does</span> the teacher explain Tajweed?"],
+                ["They practice Noorani Qaida", "They <span class='highlight'>do</span> practice Noorani Qaida", "<span class='highlight'>Do</span> they practice Noorani Qaida?"],
+                ["She memorizes short Surahs", "She <span class='highlight'>does</span> memorize short Surahs", "<span class='highlight'>Does</span> she memorize short Surahs?"],
+                ["We listen to the Ustadh", "We <span class='highlight'>do</span> listen to the Ustadh", "<span class='highlight'>Do</span> we listen to the Ustadh?"],
+                ["I join one-to-one classes", "I <span class='highlight'>do</span> join one-to-one classes", "<span class='highlight'>Do</span> I join one-to-one classes?"]
+            ],
+            "past-indef": [
+                ["He learned Quran yesterday", "He <span class='highlight'>did</span> learn Quran yesterday", "<span class='highlight'>Did</span> he learn Quran yesterday?"],
+                ["She attended the online class", "She <span class='highlight'>did</span> attend the online class", "<span class='highlight'>Did</span> she attend the online class?"],
+                ["They recited Surah Ikhlas", "They <span class='highlight'>did</span> recite Surah Ikhlas", "<span class='highlight'>Did</span> they recite Surah Ikhlas?"],
+                ["We completed the Tajweed lesson", "We <span class='highlight'>did</span> complete the Tajweed lesson", "<span class='highlight'>Did</span> we complete the Tajweed lesson?"],
+                ["He memorized Surah Fatiha", "He <span class='highlight'>did</span> memorize Surah Fatiha", "<span class='highlight'>Did</span> he memorize Surah Fatiha?"],
+                ["She joined the class on time", "She <span class='highlight'>did</span> join the class on time", "<span class='highlight'>Did</span> she join the class on time?"],
+                ["They listened to the teacher", "They <span class='highlight'>did</span> listen to the teacher", "<span class='highlight'>Did</span> they listen to the teacher?"],
+                ["He revised the lesson", "He <span class='highlight'>did</span> revise the lesson", "<span class='highlight'>Did</span> he revise the lesson?"],
+                ["We practiced Arabic letters", "We <span class='highlight'>did</span> practice Arabic letters", "<span class='highlight'>Did</span> we practice Arabic letters?"],
+                ["She read Quran last night", "She <span class='highlight'>did</span> read Quran last night", "<span class='highlight'>Did</span> she read Quran last night?"]
+            ],
+            "present-perfect": [
+                ["He has learned Tajweed rules", "<span class='highlight'>Has</span> he learned Tajweed rules?"],
+                ["They have attended the Quran class", "<span class='highlight'>Have</span> they attended the Quran class?"],
+                ["She has memorized Surah Falaq", "<span class='highlight'>Has</span> she memorized Surah Falaq?"],
+                ["We have completed today’s lesson", "<span class='highlight'>Have</span> we completed today’s lesson?"],
+                ["I have recited Surah Rahman", "<span class='highlight'>Have</span> I recited Surah Rahman?"],
+                ["The student has listened carefully", "<span class='highlight'>Has</span> the student listened carefully?"],
+                ["They have revised the Qaida", "<span class='highlight'>Have</span> they revised the Qaida?"],
+                ["She has practiced her recitation", "<span class='highlight'>Has</span> she practiced her recitation?"],
+                ["We have joined the online session", "<span class='highlight'>Have</span> we joined the online session?"],
+                ["I have improved my tilawah", "<span class='highlight'>Have</span> I improved my tilawah?"]
+            ]
+        };
+
+        function makeCard(sentences) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = sentences[0];
+            let step = 0;
+
+            // apply colors based on state
+            function updateColor() {
+                if (step === 0) {
+                    card.style.backgroundColor = "#fef9e7"; // light yellow (start)
+                } else if (step === sentences.length - 1) {
+                    card.style.backgroundColor = "#e8f8f5"; // light teal (final)
+                } else {
+                    card.style.backgroundColor = "#ffffff"; // middle = white
+                }
+            }
+            updateColor();
+
+            card.addEventListener("click", () => {
+                step = (step + 1) % sentences.length;
+                card.innerHTML = sentences[step];
+                updateColor();
+            });
+
+            return card;
+        }
+
+        for (const col in columns) {
+            const container = document.getElementById(col);
+            columns[col].forEach(s => container.appendChild(makeCard(s)));
+        }
+    </script>
+</body>
+
+</html>
