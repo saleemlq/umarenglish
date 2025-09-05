@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVO Cards — 100 Sentences</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            /* slate-900 */
+            --card: #111827;
+            /* gray-900 */
+            --muted: #94a3b8;
+            /* slate-400 */
+            --text: #e5e7eb;
+            /* gray-200 */
+            --s: #f97316;
+            /* orange-500 */
+            --v: #60a5fa;
+            /* blue-400 */
+            --o: #34d399;
+            /* emerald-400 */
+            --ring: #334155;
+            /* slate-700 */
+            --chip: #1f2937;
+            /* gray-800 */
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(160deg, #0b1025 0%, #0f172a 30%, #0b1025 100%);
+            color: var(--text);
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, .7);
+            border-bottom: 1px solid var(--ring);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: clamp(20px, 3vw, 30px);
+            margin: 6px 0 8px 0;
+            letter-spacing: .3px
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: 14px
+        }
+
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 14px 0
+        }
+
+        .btn {
+            background: var(--chip);
+            color: var(--text);
+            border: 1px solid var(--ring);
+            padding: 10px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: transform .08s ease, background .2s;
+            font-weight: 600;
+            letter-spacing: .2px;
+            box-shadow: 0 0 0 2px transparent inset;
+        }
+
+        .btn:hover {
+            background: #243043
+        }
+
+        .btn:active {
+            transform: scale(.98)
+        }
+
+        .search {
+            flex: 1;
+            min-width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--chip);
+            border: 1px solid var(--ring);
+            border-radius: 14px;
+            padding: 8px 12px
+        }
+
+        .search input {
+            flex: 1;
+            background: transparent;
+            border: 0;
+            outline: none;
+            color: var(--text);
+            font-size: 15px
+        }
+
+
+        .legend {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            display: inline-block
+        }
+
+        .s {
+            color: var(--s)
+        }
+
+        .v {
+            color: var(--v)
+        }
+
+        .o {
+            color: var(--o)
+        }
+
+
+        .grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 18px 16px 50px;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .card {
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>SVO Practice Cards</h1>
+            <div class="controls">
+                <button class="btn" id="shuffleBtn" title="Shuffle the cards">Shuffle</button>
+                <button class="btn" id="alphaBtn" title="Sort A → Z (by whole sentence)">Sort A → Z</button>
+                <button class="btn" id="resetBtn" title="Original order">Reset</button>
+                <div class="search" title="Filter by any word">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <input id="searchInput" placeholder="Search subject, verb, or object" />
+                </div>
+                <div class="legend">
+                    <span class="dot" style="background:var(--s)"></span> <span>Subject</span>
+                    <span class="dot" style="background:var(--v)"></span> <span>Verb</span>
+                    <span class="dot" style="background:var(--o)"></span> <span>Object</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="grid" id="grid"></section>
+    </main>
+
+    <footer>
+        Made for quick classroom drills and self-practice. Tip: use <kbd>Ctrl/⌘+F</kbd> to jump to a word.
+    </footer>
+
+    <script>
+        const data = [
+            { s: "I", v: "eat", o: "an apple" },
+            { s: "She", v: "does read", o: "a book" },
+            { s: "They", v: "played", o: "football" },
+            { s: "We", v: "have watched", o: "TV" },
+            { s: "He", v: "will drink", o: "water" },
+            { s: "The cat", v: "caught", o: "a mouse" },
+            { s: "My father", v: "has driven", o: "a car" },
+            { s: "The teacher", v: "will ask", o: "a question" },
+            { s: "I", v: "wrote", o: "a letter" },
+            { s: "She", v: "sang", o: "a song" },
+            { s: "The boy", v: "has kicked", o: "the ball" },
+            { s: "We", v: "did open", o: "the door" },
+            { s: "He", v: "buys", o: "milk" },
+            { s: "They", v: "will build", o: "a house" },
+            { s: "The dog", v: "has followed", o: "me" },
+            { s: "I", v: "took", o: "a photo" },
+            { s: "She", v: "will make", o: "tea" },
+            { s: "We", v: "have eaten", o: "rice" },
+            { s: "He", v: "closed", o: "the window" },
+            { s: "The baby", v: "had dropped", o: "the toy" },
+            { s: "I", v: "will call", o: "my friend" },
+            { s: "They", v: "did visit", o: "the park" },
+            { s: "She", v: "has cleaned", o: "the room" },
+            { s: "We", v: "shared", o: "food" },
+            { s: "He", v: "will send", o: "a message" },
+            { s: "The student", v: "has learned", o: "a lesson" },
+            { s: "I", v: "had found", o: "a pen" },
+            { s: "She", v: "will hold", o: "my hand" },
+            { s: "They", v: "read", o: "the newspaper" },
+            { s: "We", v: "have told", o: "a story" },
+            { s: "I", v: "saw", o: "a bird" },
+            { s: "She", v: "has lost", o: "the key" },
+            { s: "They", v: "will take", o: "the train" },
+            { s: "We", v: "did close", o: "the gate" },
+            { s: "He", v: "drinks", o: "tea" },
+            { s: "The dog", v: "bit", o: "the stick" },
+            { s: "My brother", v: "has drawn", o: "a picture" },
+            { s: "The teacher", v: "explained", o: "the rule" },
+            { s: "I", v: "will keep", o: "the book" },
+            { s: "She", v: "has bought", o: "a dress" },
+            { s: "They", v: "built", o: "a bridge" },
+            { s: "We", v: "will send", o: "the parcel" },
+            { s: "He", v: "had taken", o: "the money" },
+            { s: "The child", v: "dropped", o: "the glass" },
+            { s: "I", v: "have written", o: "the essay" },
+            { s: "She", v: "will read", o: "the letter" },
+            { s: "They", v: "found", o: "the wallet" },
+            { s: "We", v: "have kept", o: "the promise" },
+            { s: "He", v: "gave", o: "a gift" },
+            { s: "The cat", v: "ate", o: "the fish" },
+            { s: "I", v: "will meet", o: "my cousin" },
+            { s: "She", v: "had seen", o: "the movie" },
+            { s: "They", v: "do know", o: "the answer" },
+            { s: "We", v: "have done", o: "the homework" },
+            { s: "He", v: "sold", o: "the car" },
+            { s: "The boy", v: "broke", o: "the toy" },
+            { s: "I", v: "will bring", o: "the bag" },
+            { s: "She", v: "has sent", o: "a message" },
+            { s: "They", v: "wrote", o: "a story" },
+            { s: "We", v: "did finish", o: "the work" },
+            { s: "He", v: "has drawn", o: "the map" },
+            { s: "The student", v: "answered", o: "the question" },
+            { s: "I", v: "will give", o: "the money" },
+            { s: "She", v: "has shown", o: "the picture" },
+            { s: "They", v: "took", o: "the bus" },
+            { s: "We", v: "have lost", o: "the ticket" },
+            { s: "He", v: "will write", o: "a letter" },
+            { s: "The child", v: "has made", o: "a mistake" },
+            { s: "I", v: "kept", o: "the secret" },
+            { s: "She", v: "will open", o: "the gift" },
+            { s: "They", v: "had finished", o: "the game" },
+            { s: "We", v: "have seen", o: "the mountain" },
+            { s: "He", v: "did tell", o: "the truth" },
+            { s: "The dog", v: "chased", o: "the cat" },
+            { s: "I", v: "will buy", o: "bread" },
+            { s: "She", v: "has read", o: "the poem" },
+            { s: "They", v: "gave", o: "food" },
+            { s: "We", v: "did lock", o: "the door" },
+            { s: "He", v: "has eaten", o: "the cake" },
+            { s: "The baby", v: "broke", o: "the cup" },
+            { s: "I", v: "will learn", o: "the lesson" },
+            { s: "She", v: "had taken", o: "the book" },
+            { s: "They", v: "saw", o: "the teacher" },
+            { s: "We", v: "have brought", o: "the flowers" },
+            { s: "He", v: "will keep", o: "the secret" },
+            { s: "The man", v: "has told", o: "a lie" },
+            { s: "I", v: "read", o: "a letter" },
+            { s: "She", v: "will buy", o: "shoes" },
+            { s: "They", v: "had written", o: "the note" },
+            { s: "We", v: "have paid", o: "the bill" },
+            { s: "He", v: "gave", o: "a smile" },
+            { s: "The boy", v: "found", o: "the ball" },
+            { s: "I", v: "will take", o: "the chance" },
+            { s: "She", v: "has called", o: "her mother" },
+            { s: "They", v: "sent", o: "a letter" },
+            { s: "We", v: "did watch", o: "the movie" },
+            { s: "He", v: "has given", o: "the answer" },
+            { s: "The child", v: "kicked", o: "the ball" },
+            { s: "I", v: "will read", o: "the book" },
+            { s: "She", v: "has kept", o: "the diary" }
+        ];
+
+        const original = data.map((x, i) => ({ ...x, i }));
+        const grid = document.getElementById('grid');
+
+        function sentenceToText({ s, v, o }) { return `${s} ${v} ${o}.`; }
+
+        function render(list) {
+            grid.innerHTML = '';
+            list.forEach((item, idx) => {
+                const card = document.createElement('article');
+                card.className = 'card';
+                card.innerHTML = `
+          <span class="index">${idx + 1}</span>
+          <div class="sentence">
+            <span class="s">${item.s}</span>
+            <span class="v">${item.v}</span>
+            <span class="o">${item.o}</span>.
+          </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Controls
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const alphaBtn = document.getElementById('alphaBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const searchInput = document.getElementById('searchInput');
+
+        let view = [...original];
+        render(view);
+
+        shuffleBtn.onclick = () => { view = shuffle([...view]); render(view); };
+        alphaBtn.onclick = () => {
+            view = [...view].sort((a, b) => sentenceToText(a).localeCompare(sentenceToText(b)));
+            render(view);
+        };
+        resetBtn.onclick = () => { view = [...original]; render(view); };
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            if (!q) { render(view); return; }
+            const filtered = view.filter(item =>
+                item.s.toLowerCase().includes(q) ||
+                item.v.toLowerCase().includes(q) ||
+                item.o.toLowerCase().includes(q)
+            );
+            render(filtered);
+        });
+    </script>
+</body>
+
+</html>
